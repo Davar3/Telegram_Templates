@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="ku" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تێمپلێتی ڤیدیۆ - قۆناغی شیکردنەوە</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@100..900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans Arabic', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            direction: rtl;
+            font-weight: 400;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 16px;
+            font-weight: 400;
+        }
+
+        .form-container {
+            padding: 30px 20px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+            font-size: 16px;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s, box-shadow 0.3s;
+            font-family: 'Noto Sans Arabic', Arial, sans-serif;
+            font-weight: 400;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #4CAF50;
+            box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+        }
+
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .video-id-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+
+        .video-id-preview {
+            font-weight: bold;
+            color: #4CAF50;
+            font-size: 18px;
+            min-width: 120px;
+        }
+
+        .copy-button {
+            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .copy-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(76, 175, 80, 0.3);
+        }
+
+        .copy-button:active {
+            transform: translateY(0);
+        }
+
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            text-align: center;
+            display: none;
+        }
+
+        .other-video-type {
+            margin-top: 15px;
+            display: none;
+        }
+
+        .required {
+            color: #e74c3c;
+        }
+
+        .language-toggle {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 25px;
+            padding: 5px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .language-toggle button {
+            background: none;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .language-toggle button.active {
+            background: #4CAF50;
+            color: white;
+        }
+
+        .language-toggle button:not(.active) {
+            color: #666;
+        }
+
+        .language-toggle button:hover:not(.active) {
+            background: rgba(76, 175, 80, 0.1);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                border-radius: 10px;
+            }
+
+            .header {
+                padding: 20px 15px;
+            }
+
+            .header h1 {
+                font-size: 20px;
+            }
+
+            .form-container {
+                padding: 20px 15px;
+            }
+
+            input, select, textarea {
+                padding: 10px 12px;
+                font-size: 16px;
+            }
+
+            .copy-button {
+                padding: 12px 25px;
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="language-toggle">
+        <button onclick="changeLanguage('ku')" class="active" id="ku-btn">کوردی</button>
+        <button onclick="changeLanguage('ar')" id="ar-btn">عربي</button>
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <h1>تێمپلێتی ڤیدیۆ</h1>
+            <p>فۆڕمی داخڵکردنی زانیاری بۆ ڤیدیۆکان</p>
+        </div>
+
+        <div class="form-container">
+            <form id="videoForm">
+                <div class="form-group">
+                    <label for="branch">لق <span class="required">*</span></label>
+                    <select id="branch" required>
+                        <option value="">لق هەڵبژێرە</option>
+                        <option value="EBL">ئەربیل</option>
+                        <option value="DOH">دهۆک</option>
+                        <option value="SLM">سلێمانی</option>
+                        <option value="RNN">ڕانیە</option>
+                        <option value="CHM">چەمچەماڵ</option>
+                        <option value="KLR">کەلار</option>
+                        <option value="ANB">ئەنبار</option>
+                        <option value="HQ">HQ</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="videoNumber">ژمارەی ڤیدیۆ <span class="required">*</span></label>
+                    <input type="number" id="videoNumber" placeholder="بۆ نموونە: 087" required min="1" max="999">
+                    <div class="video-id-container">
+                        <span>کۆدی ڤیدیۆ:</span>
+                        <span class="video-id-preview" id="videoIdPreview">#---</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="caseId">کۆدی کەیس (Case ID)</label>
+                    <input type="number" id="caseId" placeholder="بۆ نموونە: 123" min="1">
+                </div>
+
+                <div class="form-group">
+                    <label for="date">ڕێکەوت <span class="required">*</span></label>
+                    <input type="date" id="date" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="patientName">ناوی چارەسەرخواز</label>
+                    <input type="text" id="patientName" placeholder="ناوی تەواو یان ناوێکی ناسراو">
+                </div>
+
+                <div class="form-group">
+                    <label for="phoneNumber">ژمارەی تەلەفۆن</label>
+                    <input type="tel" id="phoneNumber" placeholder="07xxxxxxxx">
+                </div>
+
+                <div class="form-group">
+                    <label for="videoType">جۆری ڤیدیۆ <span class="required">*</span></label>
+                    <select id="videoType" required>
+                        <option value="">جۆری ڤیدیۆ هەڵبژێرە</option>
+                        <option value="چیرۆکی سەرکەوتن - لەدایکبوون">چیرۆکی سەرکەوتن - لەدایکبوون</option>
+                        <option value="کەیسی ئەرێنی - هەواڵی دووگیانی">کەیسی ئەرێنی - هەواڵی دووگیانی</option>
+                        <option value="ڕوونکردنەوەی پزیشک/پەروەردەیی">ڕوونکردنەوەی پزیشک/پەروەردەیی</option>
+                        <option value="قسەکردنی چارەسەرخواز (Testimonial)">قسەکردنی چارەسەرخواز (Testimonial)</option>
+                        <option value="پشت کامێرا (Behind the Scenes)">پشت کامێرا (Behind the Scenes)</option>
+                        <option value="چالاکی/بۆنەی ناوەند">چالاکی/بۆنەی ناوەند</option>
+                        <option value="شتی تر">شتی تر (دیاری بکە)</option>
+                    </select>
+                    <div class="other-video-type" id="otherVideoType">
+                        <label for="otherVideoTypeText">دیاری بکە جۆری ڤیدیۆکە چییە:</label>
+                        <input type="text" id="otherVideoTypeText" placeholder="جۆری ڤیدیۆ بنووسە">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="videoSummary">کورتەی ڤیدیۆ <span class="required">*</span></label>
+                    <textarea id="videoSummary" placeholder="بە چەند دێڕێک باس لەوە بکە ڤیدیۆکە چی تێدایە و پەیامی سەرەکی چییە؟" required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="previousVideoCode">کۆدی ڤیدیۆی پێشوو</label>
+                    <input type="text" id="previousVideoCode" placeholder="بۆ نموونە: EBL-025">
+                </div>
+
+                <div class="form-group">
+                    <label for="editorNote">تێبینی بۆ مۆنتێر</label>
+                    <textarea id="editorNote" placeholder="هەر داواکارییەکی تایبەتت هەیە بۆ مۆنتاژ لێرەدا بینووسە"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="captionNote">تێبینی بۆ نووسەری کاپشن</label>
+                    <textarea id="captionNote" placeholder="هەر زانیارییەکی گرنگ کە پێویستە لە کاپشنەکەدا ئاماژەی پێبکرێت"></textarea>
+                </div>
+
+                <button type="button" class="copy-button" onclick="generateAndCopyTemplate()">
+                    کۆپی بکە 
+                </button>
+
+                <div class="success-message" id="successMessage">
+                    تێمپلێتەکە بە سەرکەوتوویی کۆپی کرا! ئێستا دەتوانیت لە تێلێگرام پەیست بکەیت.
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Language translations
+        const translations = {
+            ku: {
+                title: "تێمپلێتی ڤیدیۆ",
+                subtitle: "فۆڕمی داخڵکردنی زانیاری بۆ ڤیدیۆکان",
+                branch: "لق",
+                selectBranch: "لق هەڵبژێرە",
+                videoNumber: "ژمارەی ڤیدیۆ",
+                videoNumberPlaceholder: "بۆ نموونە: 087",
+                videoCode: "کۆدی ڤیدیۆ:",
+                caseId: "کۆدی کەیس (Case ID)",
+                caseIdPlaceholder: "بۆ نموونە: 123",
+                date: "ڕێکەوت",
+                patientName: "ناوی چارەسەرخواز",
+                patientNamePlaceholder: "ناوی تەواو یان ناوێکی ناسراو",
+                phoneNumber: "ژمارەی تەلەفۆن",
+                phoneNumberPlaceholder: "07xxxxxxxx",
+                videoType: "جۆری ڤیدیۆ",
+                selectVideoType: "جۆری ڤیدیۆ هەڵبژێرە",
+                videoSummary: "کورتەی ڤیدیۆ",
+                videoSummaryPlaceholder: "بە چەند دێڕێک باس لەوە بکە ڤیدیۆکە چی تێدایە و پەیامی سەرەکی چییە؟",
+                previousVideoCode: "کۆدی ڤیدیۆی پێشوو",
+                previousVideoCodePlaceholder: "بۆ نموونە: EBL-025",
+                editorNote: "تێبینی بۆ مۆنتێر",
+                editorNotePlaceholder: "هەر داواکارییەکی تایبەتت هەیە بۆ مۆنتاژ لێرەدا بینووسە",
+                captionNote: "تێبینی بۆ نووسەری کاپشن",
+                captionNotePlaceholder: "هەر زانیارییەکی گرنگ کە پێویستە لە کاپشنەکەدا ئاماژەی پێبکرێت",
+                copyButton: "کۆپی کردنی تێمپلێت",
+                successMessage: "تێمپلێتەکە بە سەرکەوتوویی کۆپی کرا! ئێستا دەتوانیت لە تێلێگرام پەیست بکەیت.",
+                otherVideoTypeLabel: "دیاری بکە جۆری ڤیدیۆکە چییە:",
+                otherVideoTypePlaceholder: "جۆری ڤیدیۆ بنووسە",
+                errorMessage: "هەڵەیەک ڕوویدا لە کاتی کۆپی کردن. تکایە دووبارە هەوڵ بدەرەوە.",
+                videoTypes: {
+                    success: "چیرۆکی سەرکەوتن - لەدایکبوون",
+                    urgent: "کەیسی ئەرێنی - هەواڵی دووگیانی",
+                    doctor: "ڕوونکردنەوەی پزیشک/پەروەردەیی",
+                    testimonial: "قسەکردنی چارەسەرخواز (Testimonial)",
+                    behindScenes: "پشت کامێرا (Behind the Scenes)",
+                    activity: "چالاکی/بۆنەی ناوەند",
+                    other: "شتی تر (دیاری بکە)"
+                },
+                branches: {
+                    EBL: "ئەربیل",
+                    DOH: "دهۆک",
+                    SLM: "سلێمانی",
+                    RNN: "ڕانیە",
+                    CHM: "چەمچەماڵ",
+                    KLR: "کەلار",
+                    ANB: "ئەنبار",
+                    HQ: "HQ"
+                },
+                days: ['یەکشەممە', 'دووشەممە', 'سێشەممە', 'چوارشەممە', 'پێنجشەممە', 'هەینی', 'شەممە']
+            },
+            ar: {
+                title: "قالب الفيديو",
+                subtitle: "نموذج إدخال معلومات الفيديو",
+                branch: "الفرع",
+                selectBranch: "اختر الفرع",
+                videoNumber: "رقم الفيديو",
+                videoNumberPlaceholder: "مثال: 087",
+                videoCode: "كود الفيديو:",
+                caseId: "كود الحالة (Case ID)",
+                caseIdPlaceholder: "مثال: 123",
+                date: "التاريخ",
+                patientName: "اسم المريض",
+                patientNamePlaceholder: "الاسم الكامل أو اسم معروف",
+                phoneNumber: "رقم الهاتف",
+                phoneNumberPlaceholder: "07xxxxxxxx",
+                videoType: "نوع الفيديو",
+                selectVideoType: "اختر نوع الفيديو",
+                videoSummary: "ملخص الفيديو",
+                videoSummaryPlaceholder: "اكتب في بضعة أسطر عن محتوى الفيديو والرسالة الأساسية؟",
+                previousVideoCode: "كود الفيديو السابق",
+                previousVideoCodePlaceholder: "مثال: EBL-025",
+                editorNote: "ملاحظة للمحرر",
+                editorNotePlaceholder: "أي متطلبات خاصة للمونتاج اكتبها هنا",
+                captionNote: "ملاحظة لكاتب التعليقات",
+                captionNotePlaceholder: "أي معلومات مهمة يجب الإشارة إليها في التعليقات",
+                copyButton: "نسخ القالب",
+                successMessage: "تم نسخ القالب بنجاح! يمكنك الآن لصقه في تيليجرام.",
+                otherVideoTypeLabel: "حدد نوع الفيديو:",
+                otherVideoTypePlaceholder: "اكتب نوع الفيديو",
+                errorMessage: "حدث خطأ أثناء النسخ. يرجى المحاولة مرة أخرى.",
+                videoTypes: {
+                    success: "قصة نجاح - الولادة",
+                    urgent: "حالة طارئة - أخبار التوأم",
+                    doctor: "شرح طبي/تعليمي",
+                    testimonial: "شهادة المريض (Testimonial)",
+                    behindScenes: "خلف الكواليس (Behind the Scenes)",
+                    activity: "نشاط/مناسبة المركز",
+                    other: "أخرى (حدد)"
+                },
+                branches: {
+                    EBL: "أربيل",
+                    DOH: "دهوك",
+                    SLM: "السليمانية",
+                    RNN: "رانية",
+                    CHM: "چەمچەماڵ",
+                    KLR: "کەلار",
+                    ANB: "أنبار",
+                    HQ: "HQ"
+                },
+                days: ['الأحد', 'الاثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت']
+            }
+        };
+
+        let currentLanguage = 'ku';
+
+        // Change language function
+        function changeLanguage(lang) {
+            currentLanguage = lang;
+            
+            // Update button states
+            document.getElementById('ku-btn').classList.toggle('active', lang === 'ku');
+            document.getElementById('ar-btn').classList.toggle('active', lang === 'ar');
+            
+            // Update all text elements
+            const t = translations[lang];
+            
+            // Update title and subtitle
+            document.title = t.title;
+            document.querySelector('.header h1').textContent = t.title;
+            document.querySelector('.header p').textContent = t.subtitle;
+            
+            // Update labels
+            document.querySelector('label[for="branch"]').innerHTML = t.branch + ' <span class="required">*</span>';
+            document.querySelector('label[for="videoNumber"]').innerHTML = t.videoNumber + ' <span class="required">*</span>';
+            document.querySelector('label[for="caseId"]').textContent = t.caseId;
+            document.querySelector('label[for="date"]').innerHTML = t.date + ' <span class="required">*</span>';
+            document.querySelector('label[for="patientName"]').textContent = t.patientName;
+            document.querySelector('label[for="phoneNumber"]').textContent = t.phoneNumber;
+            document.querySelector('label[for="videoType"]').innerHTML = t.videoType + ' <span class="required">*</span>';
+            document.querySelector('label[for="videoSummary"]').innerHTML = t.videoSummary + ' <span class="required">*</span>';
+            document.querySelector('label[for="previousVideoCode"]').textContent = t.previousVideoCode;
+            document.querySelector('label[for="editorNote"]').textContent = t.editorNote;
+            document.querySelector('label[for="captionNote"]').textContent = t.captionNote;
+            document.querySelector('label[for="otherVideoTypeText"]').textContent = t.otherVideoTypeLabel;
+            
+            // Update placeholders
+            document.getElementById('videoNumber').placeholder = t.videoNumberPlaceholder;
+            document.getElementById('caseId').placeholder = t.caseIdPlaceholder;
+            document.getElementById('patientName').placeholder = t.patientNamePlaceholder;
+            document.getElementById('phoneNumber').placeholder = t.phoneNumberPlaceholder;
+            document.getElementById('videoSummary').placeholder = t.videoSummaryPlaceholder;
+            document.getElementById('previousVideoCode').placeholder = t.previousVideoCodePlaceholder;
+            document.getElementById('editorNote').placeholder = t.editorNotePlaceholder;
+            document.getElementById('captionNote').placeholder = t.captionNotePlaceholder;
+            document.getElementById('otherVideoTypeText').placeholder = t.otherVideoTypePlaceholder;
+            
+            // Update dropdown options
+            const branchSelect = document.getElementById('branch');
+            branchSelect.innerHTML = `<option value="">${t.selectBranch}</option>`;
+            Object.keys(t.branches).forEach(key => {
+                branchSelect.innerHTML += `<option value="${key}">${t.branches[key]}</option>`;
+            });
+            
+            const videoTypeSelect = document.getElementById('videoType');
+            videoTypeSelect.innerHTML = `<option value="">${t.selectVideoType}</option>`;
+            Object.keys(t.videoTypes).forEach(key => {
+                const value = key === 'other' ? 'شتی تر' : t.videoTypes[key];
+                videoTypeSelect.innerHTML += `<option value="${value}">${t.videoTypes[key]}</option>`;
+            });
+            
+            // Update other elements
+            document.querySelector('.video-id-container span').textContent = t.videoCode;
+            document.querySelector('.copy-button').textContent = t.copyButton;
+            document.getElementById('successMessage').textContent = t.successMessage;
+            
+            // Update video ID preview
+            updateVideoIdPreview();
+        }
+        // Update video ID preview when branch or number changes
+        function updateVideoIdPreview() {
+            const branch = document.getElementById('branch').value;
+            const videoNumber = document.getElementById('videoNumber').value;
+            const preview = document.getElementById('videoIdPreview');
+            
+            if (branch && videoNumber) {
+                const formattedNumber = videoNumber.toString().padStart(3, '0');
+                preview.textContent = `#${branch}-${formattedNumber}`;
+            } else {
+                preview.textContent = '#---';
+            }
+        }
+
+        // Show/hide other video type field
+        function toggleOtherVideoType() {
+            const videoType = document.getElementById('videoType').value;
+            const otherField = document.getElementById('otherVideoType');
+            
+            // Check for "other" option in both languages
+            const isOther = videoType === 'شتی تر' || videoType === 'أخرى (حدد)';
+            
+            if (isOther) {
+                otherField.style.display = 'block';
+                document.getElementById('otherVideoTypeText').required = true;
+            } else {
+                otherField.style.display = 'none';
+                document.getElementById('otherVideoTypeText').required = false;
+                document.getElementById('otherVideoTypeText').value = '';
+            }
+        }
+
+        // Format date to Kurdish/Arabic format
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            const day = date.getDate().toString().padStart(2, '0');
+            const month = (date.getMonth() + 1).toString().padStart(2, '0');
+            const year = date.getFullYear();
+            
+            const days = translations[currentLanguage].days;
+            const dayName = days[date.getDay()];
+            
+            return `${day}/${month}/${year}\n${dayName}`;
+        }
+
+        // Generate and copy template
+        function generateAndCopyTemplate() {
+            const form = document.getElementById('videoForm');
+            
+            // Check if required fields are filled
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+
+            const branch = document.getElementById('branch').value;
+            const videoNumber = document.getElementById('videoNumber').value;
+            const caseId = document.getElementById('caseId').value;
+            const date = document.getElementById('date').value;
+            const patientName = document.getElementById('patientName').value;
+            const phoneNumber = document.getElementById('phoneNumber').value;
+            const videoType = document.getElementById('videoType').value;
+            const otherVideoType = document.getElementById('otherVideoTypeText').value;
+            const videoSummary = document.getElementById('videoSummary').value;
+            const previousVideoCode = document.getElementById('previousVideoCode').value;
+            const editorNote = document.getElementById('editorNote').value;
+            const captionNote = document.getElementById('captionNote').value;
+
+            // Generate video ID
+            const formattedNumber = videoNumber.toString().padStart(3, '0');
+            const videoId = `#${branch}-${formattedNumber}`;
+
+            // Generate template
+            const t = translations[currentLanguage];
+            let template = `Video ID: ${videoId}\n\n`;
+            
+            if (caseId) {
+                template += `${currentLanguage === 'ku' ? 'کۆدی کەیس' : 'كود الحالة'} (Case ID):\n#${caseId}\n\n`;
+            } else {
+                template += `${currentLanguage === 'ku' ? 'کۆدی کەیس' : 'كود الحالة'} (Case ID):\n\n`;
+            }
+
+            template += `${currentLanguage === 'ku' ? 'ڕێکەوت' : 'التاريخ'}(Date):\n${formatDate(date)}\n\n`;
+
+            if (patientName) {
+                template += `${currentLanguage === 'ku' ? 'ناوی چارەسەرخواز' : 'اسم المريض'}:\n${patientName}\n\n`;
+            } else {
+                template += `${currentLanguage === 'ku' ? 'ناوی چارەسەرخواز' : 'اسم المريض'}:\n\n`;
+            }
+
+            if (phoneNumber) {
+                template += `${currentLanguage === 'ku' ? 'ژمارەی تەلەفۆن' : 'رقم الهاتف'}:\n${phoneNumber}\n\n`;
+            } else {
+                template += `${currentLanguage === 'ku' ? 'ژمارەی تەلەفۆن' : 'رقم الهاتف'}:\n\n`;
+            }
+
+            const finalVideoType = (videoType === 'شتی تر' || videoType === 'أخرى (حدد)') ? otherVideoType : videoType;
+            template += `${currentLanguage === 'ku' ? 'جۆری ڤیدیۆ' : 'نوع الفيديو'}:\n${finalVideoType}\n\n`;
+
+            template += `${currentLanguage === 'ku' ? 'کورتەی ڤیدیۆ' : 'ملخص الفيديو'}:\n${videoSummary}\n\n`;
+
+            if (previousVideoCode) {
+                template += `${currentLanguage === 'ku' ? 'کۆدی ڤیدیۆی پێشوو' : 'كود الفيديو السابق'}:\n${previousVideoCode}\n\n`;
+            } else {
+                template += `${currentLanguage === 'ku' ? 'کۆدی ڤیدیۆی پێشوو' : 'كود الفيديو السابق'}:\n\n`;
+            }
+
+            if (editorNote) {
+                template += `${currentLanguage === 'ku' ? 'تێبینی بۆ مۆنتێر' : 'ملاحظة للمحرر'}:\n${editorNote}\n\n`;
+            } else {
+                template += `${currentLanguage === 'ku' ? 'تێبینی بۆ مۆنتێر' : 'ملاحظة للمحرر'}:\n\n`;
+            }
+
+            if (captionNote) {
+                template += `${currentLanguage === 'ku' ? 'تێبینی بۆ نووسەری کاپشن' : 'ملاحظة لكاتب التعليقات'}:\n${captionNote}`;
+            } else {
+                template += `${currentLanguage === 'ku' ? 'تێبینی بۆ نووسەری کاپشن' : 'ملاحظة لكاتب التعليقات'}:\n`;
+            }
+
+            // Copy to clipboard
+            navigator.clipboard.writeText(template).then(() => {
+                const successMessage = document.getElementById('successMessage');
+                successMessage.style.display = 'block';
+                setTimeout(() => {
+                    successMessage.style.display = 'none';
+                }, 3000);
+            }).catch(err => {
+                const errorMsg = translations[currentLanguage].errorMessage;
+                alert(errorMsg);
+            });
+        }
+
+        // Event listeners
+        document.getElementById('branch').addEventListener('change', updateVideoIdPreview);
+        document.getElementById('videoNumber').addEventListener('input', updateVideoIdPreview);
+        document.getElementById('videoType').addEventListener('change', toggleOtherVideoType);
+
+        // Set today's date as default
+        document.getElementById('date').valueAsDate = new Date();
+    </script>
+</body>
+</html>
